@@ -1,12 +1,10 @@
 import json
 from inv import *
 
-tablesize = 1000000
-
-index = [('', -1)] * tablesize
-
 old_str_list = []
 inv_list = open('inv-list_bool.txt', mode='w')
+
+index = {}
 
 for id in range(1, 60000):
 
@@ -23,9 +21,11 @@ for id in range(1, 60000):
 
     for item in tokens:
         inv_location = 0
-        hashloaction = inv_hash(index, item, tablesize)
-        inv_location_pre = index[hashloaction][1]
-        index[hashloaction] = (item, len(old_str_list))
+        try:
+            inv_location_pre = index[item]
+        except KeyError:
+            inv_location_pre = -1
+        index[item] = len(old_str_list)
         old_str_list.append(str(inv_location_pre) + '\n')
         old_str_list.append(str(id) + '\n')
 

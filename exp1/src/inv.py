@@ -2,25 +2,6 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 
-def str_hex_mod(Str, tablesize):
-    r = 0
-    for c in Str:
-        if c <= '9':
-            r += r * 16 + int(c)
-        else:
-            r += r * 16 + ord(c) - 87
-        r %= tablesize
-    return r
-
-
-
-
-def inv_hash(hashtable, item, tablesize):
-    location = hash(item) % (tablesize - 1)
-    while hashtable[location] != ('', -1) and hashtable[location][0] != item:
-        location = hash(location + 0.1) % (tablesize - 1)
-    return location
-
 
 def name(id):
     idstr = str(id)
@@ -63,7 +44,8 @@ def preOp_semantics(message):
 
     tokens = word_tokenize(message)
     clean_tokens = tokens[:]
-    finallist = {'':  1}
+    finallist = []
+    countlist =[]
 
     for token in tokens:
         if token in stopwords.words('english'):
@@ -76,9 +58,12 @@ def preOp_semantics(message):
 
     for token in tokens:
         if token not in finallist:
-            finallist[token] = 1
+            finallist.append(token)
+            countlist.append(1)
         else:
-            finallist[token] += 1
+            countlist[finallist.index(token)] += 1
 
-    return finallist
+    finaltup = (finallist, countlist)
+
+    return finaltup
 
