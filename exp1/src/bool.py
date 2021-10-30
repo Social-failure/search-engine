@@ -3,7 +3,7 @@ from inv import *
 
 str_list = []
 inv_list = open('../output/inv_list_bool.txt', mode='w')
-docrange = 60
+docrange = 60000
 index = {}
 doclist = open('../output/doclist.txt', mode='w')
 numofblog = 0

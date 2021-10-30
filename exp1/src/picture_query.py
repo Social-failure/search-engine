@@ -47,6 +47,11 @@ for pic_index in range(len(total_pic)):
 all_con.sort(key=lambda x: x[1], reverse=True)
 
 for i in range(10):
+    file_id = int(total_pic[all_con[i][0]])
+    filename = blogname(file_id)
+    print(filename)
+
+for i in range(10):
     result = open('../output/pic_result/' + str(i), mode='wb')
     file_id = int(total_pic[all_con[i][0]])
     filename = blogname(file_id)

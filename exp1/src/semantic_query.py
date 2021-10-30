@@ -1,5 +1,5 @@
 import json
-from basic_operation import *
+from basic_operation_semantic import *
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords

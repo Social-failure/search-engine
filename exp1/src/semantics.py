@@ -8,7 +8,7 @@ data_list = []
 index = {}
 numofdoc = 0
 doclist = {}
-docrange = 100
+docrange = 60000
 numofblog = 0
 
 doc = open("../output/doclist_semantics.txt", mode='w')

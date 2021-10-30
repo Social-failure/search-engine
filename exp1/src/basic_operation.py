@@ -1,28 +1,121 @@
-import math
+import json
 
 
-# function: calculate the tf-idf value
-def calculate(tf, total_num_n, df):
-    tf_idf = (1 + math.log(tf, 10)) * math.log(total_num_n / (df + 1), 10)
-    return tf_idf
+# get ID lists of the token
+def id_list(token):
+    with open("../output/index.json", "r") as f:
+        token_pointer_dict = json.load(f)
+
+    pointer = token_pointer_dict[token]
+
+    token_id_list = [pointer[1]]
+    next_pointer = pointer[0]
+    with open("../output/inv_list_bool.txt", "r") as f:
+        next_id_list = f.readlines()
+        while next_pointer != 1:
+            token_id_list.append(token_id_list[len(token_id_list) - 1] - int(next_id_list[next_pointer + 1]))
+            next_pointer -= int(next_id_list[next_pointer])
+    return token_id_list
 
 
-# function: calculate the cosine value between two vectors
-def similarity(vector1, vector2):
-    if len(vector1) == 1:
-        return vector2[0]
-    zero_list = [0] * len(vector1)
-    if vector1 == zero_list or vector2 == zero_list:
-        return float(1) if vector1 == vector2 else float(0)
-    up = 0
-    factor1 = 0
-    factor2 = 0
-    for dimension in range(len(vector1)):
-        up += vector1[dimension] * vector2[dimension]
-        factor1 += math.pow(vector1[dimension], 2)
-        factor2 += math.pow(vector2[dimension], 2)
-    cos = up / (math.sqrt(factor1) * math.sqrt(factor2))
-    return cos
+# AND operation
+def and_list(id_list_a, id_list_b):
+    and_id_list = []
+    a = 0
+    b = 0
+    while (a < len(id_list_a)) and (b < len(id_list_b)):
+        if id_list_a[a] == id_list_b[b]:
+            and_id_list.append(id_list_a[a])
+            a = a + 1
+            b = b + 1
+        elif id_list_a[a] > id_list_b[b]:
+            a = a + 1
+        elif id_list_a[a] < id_list_b[b]:
+            b = b + 1
+    return and_id_list
+
+
+# OR operation
+def or_list(id_list_a, id_list_b):
+    or_id_list = []
+    a = 0
+    b = 0
+    while (a < len(id_list_a)) and (b < len(id_list_b)):
+        if id_list_a[a] == id_list_b[b]:
+            or_id_list.append(id_list_a[a])
+            a = a + 1
+            b = b + 1
+        elif id_list_a[a] > id_list_b[b]:
+            or_id_list.append(id_list_a[a])
+            a = a + 1
+        elif id_list_a[a] < id_list_b[b]:
+            or_id_list.append(id_list_b[b])
+            b = b + 1
+    while a < len(id_list_a):
+        or_id_list.append(id_list_a[a])
+        a = a + 1
+    while b < len(id_list_b):
+        or_id_list.append(id_list_b[b])
+        b = b + 1
+    return or_id_list
+
+
+# NOT operation
+def not_list(delete_id_list):
+    # initially, no_id_list is all id list
+    with open("../output/doclist.txt", "r") as f:
+        not_id_list = f.readlines()
+        not_id_list.pop()
+        not_id_list.reverse()
+
+    index = 0
+    while index < len(not_id_list):
+        not_id_list[index] = int(not_id_list[index])
+        index += 1
+
+    index = 0
+    while index < len(delete_id_list):
+        if delete_id_list[index] in not_id_list:
+            not_id_list.remove(delete_id_list[index])
+        index += 1
+    return not_id_list
+
+
+# if it is an operator, return True; else, return False
+def operator_or_not(token):
+    if token == 'not':
+        return True
+    elif token == 'and':
+        return True
+    elif token == 'or':
+        return True
+    elif token == '(':
+        return True
+    elif token == ')':
+        return True
+    elif token == '#':
+        return True
+    else:
+        return False
+
+
+# get the priority between 2 operators
+def get_priority(op1, op2):
+    # set the priority array of all operators
+    priority = \
+        [['<', ' ', ' ', '<', ' ', ' '],
+         ['<', '>', '>', '<', '>', '>'],
+         ['<', '<', '>', '<', '>', '>'],
+         ['<', '<', '<', '<', '=', ' '],
+         [' ', '>', '>', ' ', '>', '>'],
+         ['<', '<', '<', '<', ' ', '=']]
+    op = ['not', 'and', 'or', '(', ')', '#']
+
+    # get the coordinate of op1, op2
+    x = op.index(op1)
+    y = op.index(op2)
+
+    return priority[x][y]
 
 
 # transform the num (about ID) into the real name of the blog
@@ -45,4 +138,5 @@ def news_name(id):
     idname = '../dataset/2018_01/news_' + idstr + '.json'
 
     return idname
+
 
