@@ -3,9 +3,9 @@ from inv import *
 import json
 
 cnt = 0
-for id in range(4982, 60000):
+for id in range(0, 60000):
 
-    if cnt == 925:
+    if cnt == 1000:
         break
     idname = blogname(id)
 
@@ -33,7 +33,12 @@ for id in range(4982, 60000):
 
     response = requests.request("GET", url, headers=headers, params=querystring)
 
+    down = response.text.replace('\\', '')
+    down = down[1:len(down) - 1]
+
     with open(savename, "w", encoding='utf-8') as f:
-        f.write(json.dumps(response.text))
+        f.write(down)
 
     print(response.text)
+
+    cnt += 1

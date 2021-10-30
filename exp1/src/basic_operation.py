@@ -31,7 +31,7 @@ def blog_name(id):
     idlen = len(idstr)
     for length in range(1, 8 - idlen):
         idstr = '0' + idstr
-    idname = '2018_01/blogs_' + idstr + '.json'
+    idname = '../dataset/2018_01/blogs_' + idstr + '.json'
 
     return idname
 
@@ -42,7 +42,7 @@ def news_name(id):
     idlen = len(idstr)
     for length in range(1, 8 - idlen):
         idstr = '0' + idstr
-    idname = '2018_01/news_' + idstr + '.json'
+    idname = '../dataset/2018_01/news_' + idstr + '.json'
 
     return idname
 

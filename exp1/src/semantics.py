@@ -11,7 +11,7 @@ doclist = {}
 docrange = 100
 numofblog = 0
 
-doc = open("doclist_semantics.txt", mode='w')
+doc = open("../output/doclist_semantics.txt", mode='w')
 
 for id in range(1, docrange):
 
@@ -92,10 +92,10 @@ for item in index:
     csr_cnt += 1
 
 
-with open("index_semantics.json", "w", encoding='utf-8') as f:
+with open("../output/index_semantics.json", "w", encoding='utf-8') as f:
     f.write(json.dumps(index_map))
 
-save_npz("matrix_semantics.npz", S.tocoo())
+save_npz("../output/matrix_semantics.npz", S.tocoo())
 
 doc.write(str(numofblog))
 doc.close()

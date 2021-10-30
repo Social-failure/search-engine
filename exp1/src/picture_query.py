@@ -26,16 +26,16 @@ for each_input in clear_input:
     tokens.append(token_stem)
 
 # get the total num of pictures
-with open("picture_list.txt", 'r') as f:
+with open("../output/picture_list.txt", 'r') as f:
     total_pic = f.readlines()
 
 # get the map of tags
-with open("tag_list.txt", 'r') as f:
+with open("../output/tag_list.txt", 'r') as f:
     total_tag = f.readlines()
 
 # calculate the confidence between query and all picmo
 all_con = []
-s = load_npz("matrix_pic.npz")
+s = load_npz("../output/matrix_pic.npz")
 s = s.todok()
 for pic_index in range(len(total_pic)):
     pic_confidence = 0
@@ -47,7 +47,7 @@ for pic_index in range(len(total_pic)):
 all_con.sort(key=lambda x: x[1], reverse=True)
 
 for i in range(10):
-    result = open('result/' + str(i), mode='wb')
+    result = open('../output/pic_result/' + str(i), mode='wb')
     file_id = int(total_pic[all_con[i][0]])
     filename = blogname(file_id)
     data = json.load(open(filename))

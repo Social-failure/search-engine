@@ -7,13 +7,12 @@ taglist = {}
 
 picturelist = []
 
-doc = open("tag_list.txt", mode='w')
-pic = open("picture_list.txt", mode='w')
+doc = open("../output/tag_list.txt", mode='w')
+pic = open("../output/picture_list.txt", mode='w')
 for id in range(1, 60000):
 
 
-    idname = picsname(id)
-    print(idname)
+    idname = picname(id)
     try:
         data = json.load(open(idname))
     except IOError:
@@ -44,7 +43,7 @@ S = dok_matrix((len(taglist), len(picturelist)), dtype=np.float32)
 for i in range(len(picturelist)):
     for j in picturelist[i]:
         S[taglist[j], i] = picturelist[i][j]
-save_npz("matrix_pic.npz", S.tocoo())
+save_npz("../output/matrix_pic.npz", S.tocoo())
 
 
 doc.close()

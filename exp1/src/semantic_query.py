@@ -28,12 +28,12 @@ for each_input in clear_input:
         tokens.append(token_stem)
 
 # get the x-coordinate and df of each token in semantic query
-with open("index_semantics.json", 'r') as f:
+with open("../output/index_semantics.json", 'r') as f:
     coordinate_df_dict = json.load(f)
 
 
 # get the total num of files
-with open("doclist_semantics.txt", 'r') as f:
+with open("../output/doclist_semantics.txt", 'r') as f:
     total_file = f.readlines()
     N = len(total_file) - 1
     blog_news_boundary = int(total_file.pop())
@@ -46,7 +46,7 @@ for token_order in range(len(tokens)):
 
 # calculate the cos between query_vector and all file_vector
 all_cos = []
-s = load_npz("matrix_semantics.npz")
+s = load_npz("../output/matrix_semantics.npz")
 s = s.todok()
 for file_index in range(N):
     file_vector = []
