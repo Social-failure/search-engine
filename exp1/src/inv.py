@@ -19,6 +19,23 @@ def newsname(id):
     idname = '2018_01/news_' + idstr + '.json'
     return idname
 
+def picname(id):
+    idstr = str(id)
+    idlen = len(idstr)
+    for length in range(1, 8 - idlen):
+        idstr = '0' + idstr
+    idname = '2018_01/picture_' + idstr + '.json'
+    return idname
+
+def picsname(id):
+    idstr = str(id)
+    idlen = len(idstr)
+    for length in range(1, 8 - idlen):
+        idstr = '0' + idstr
+    idname = '2018_01/pictures_' + idstr + '.json'
+    return idname
+
+
 def preOp_bool(message):
 
     stopwords.words('english')
